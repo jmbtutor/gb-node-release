@@ -23,5 +23,14 @@
   "bugs": {
     "url": "https://github.com/groupby/gb-node-release/issues"
   },
-  "homepage": "https://github.com/groupby/gb-node-release#readme"
+  "homepage": "https://github.com/groupby/gb-node-release#readme",
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "bunyan": "^1.8.1",
+    "bunyan-prettystream": "^0.1.3",
+    "file-exists": "^2.0.0",
+    "github": "^2.4.0",
+    "lodash": "^4.14.1",
+    "yamljs": "^0.2.8"
+  }
 }

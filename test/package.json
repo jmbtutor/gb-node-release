@@ -1,0 +1,13 @@
+{
+  "name": "fake-package",
+  "version": "1.0.1",
+  "description": "Fake package for testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Eric Hacke",
+  "license": "MIT",
+  "dependencies": {}
+}
