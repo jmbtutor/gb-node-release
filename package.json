@@ -1,6 +1,6 @@
 {
   "name": "gb-node-release",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Simple NPM package for creating github releases",
   "main": "index.js",
   "bin": {
