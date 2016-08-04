@@ -25,7 +25,9 @@ const releaser = (gitClient, githubClient, config, releaseType, newVersion) => {
 
       // log.info(JSON.stringify(commits, null, 2));
 
-      for (let i = 0; i < commits.length; i++) {
+      const maxCommits = commits.length < CONSTANTS.MAX_COMMIT_MSGS ? commits.length : CONSTANTS.MAX_COMMIT_MSGS;
+
+      for (let i = 0; i < maxCommits; i++) {
         if (isPreviousReleaseMessage(commits[i].commit.message, newVersion)) break;
         commitsSinceRelease.push(commits[i]);
       }
@@ -43,6 +45,10 @@ const releaser = (gitClient, githubClient, config, releaseType, newVersion) => {
       releaseMsg += commitsSinceRelease.reduce((result, commit) => {
         if (!isReleaseMessage(commit.commit.message)) {
           result += `- ${commit.commit.message}\n`;
+        }
+
+        if (commitsSinceRelease.length === CONSTANTS.MAX_COMMIT_MSGS) {
+          result += '\nAnd more commits not included here.'
         }
 
         return result;

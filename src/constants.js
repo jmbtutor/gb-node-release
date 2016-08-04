@@ -5,5 +5,6 @@ module.exports = {
     'minor',
     'patch'
   ],
-  CONFIG_FILE_PATH:  '.gb-release.yml'
+  CONFIG_FILE_PATH:  '.gb-release.yml',
+  MAX_COMMIT_MSGS:   15
 };
