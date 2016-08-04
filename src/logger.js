@@ -9,7 +9,7 @@ module.exports = bunyan.createLogger({
   streams: [
     {
       type:   'raw',
-      level:  'warn',
+      level:  'info',
       stream: prettyStdOut
     }
   ]
