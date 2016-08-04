@@ -11,6 +11,7 @@ const semver     = require('semver');
 const git        = require('simple-git');
 const stdio      = require('stdio');
 const CONSTANTS  = require('./src/constants');
+const npm        = require('npm');
 
 const args = process.argv.slice(2);
 
@@ -26,12 +27,14 @@ const defaultConfig = {
     usernameEnvVar: 'GITHUB_USER',
     codeEnvVar:     'GITHUB_CODE'
   },
-  versionInFiles: []
+  versionInFiles: [],
+  npmPublish:     false
 };
 
 let config = defaultConfig;
 
-let abort = false;
+let abort       = false;
+let packageJson = null;
 
 // Check for config file
 if (!fileExists(CONSTANTS.CONFIG_FILE_PATH)) {
@@ -45,7 +48,7 @@ if (!fileExists('./package.json')) {
   log.error('no package.json found in current directory');
   abort = true;
 } else {
-  const packageJson = JSON.parse(fs.readFileSync('./package.json'));
+  packageJson = JSON.parse(fs.readFileSync('./package.json'));
 
   if (!packageJson.repository) {
     log.error(`repository must be defined in package.json`);
@@ -86,6 +89,21 @@ githubClient.authenticate({
 
 versioning(git(), config, releaseLevel)
   .then((targetVersion) => releasing(git(), githubClient, config, releaseLevel, targetVersion))
+  .then(() => {
+    if (config.npmPublish) {
+      return new Promise((resolve, reject)=> {
+        npm.load(packageJson, (err) => {
+          if (err) {
+            return reject(err);
+          }
+
+          npm.commands.publish([], (err) => {
+            return err ? reject(err) : resolve();
+          });
+        });
+      });
+    }
+  })
   .catch((error) => {
     log.error(`error during release ${error || ''}`);
     process.exit(1)
