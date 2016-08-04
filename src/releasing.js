@@ -47,12 +47,12 @@ const releaser = (gitClient, githubClient, config, releaseType, newVersion) => {
           result += `- ${commit.commit.message}\n`;
         }
 
-        if (commitsSinceRelease.length === CONSTANTS.MAX_COMMIT_MSGS) {
-          result += '\nAnd more commits not included here.'
-        }
-
         return result;
       }, '');
+
+      if (commitsSinceRelease.length === CONSTANTS.MAX_COMMIT_MSGS) {
+        releaseMsg += '\nAnd more commits not included here.'
+      }
 
       return githubClient.repos.createRelease({
         user:     user,
