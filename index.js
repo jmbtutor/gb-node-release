@@ -88,6 +88,7 @@ githubClient.authenticate({
 });
 
 versioning(git(), config, releaseLevel)
+  .delay(1000) // Want to make sure the commits are registered by github before attempting a release
   .then((targetVersion) => releasing(git(), githubClient, config, releaseLevel, targetVersion))
   .then(() => {
     if (config.npmPublish) {
