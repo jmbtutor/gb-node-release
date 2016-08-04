@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Simple NPM package for creating github releases",
   "main": "index.js",
+  "bin": {
+    "gb-node-release": "bin/index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,5 +26,17 @@
   "bugs": {
     "url": "https://github.com/groupby/gb-node-release/issues"
   },
-  "homepage": "https://github.com/groupby/gb-node-release#readme"
+  "homepage": "https://github.com/groupby/gb-node-release#readme",
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "bunyan": "^1.8.1",
+    "bunyan-prettystream": "^0.1.3",
+    "file-exists": "^2.0.0",
+    "github": "^2.4.0",
+    "lodash": "^4.14.1",
+    "semver": "^5.3.0",
+    "simple-git": "^1.44.0",
+    "stdio": "^0.2.7",
+    "yamljs": "^0.2.8"
+  }
 }
