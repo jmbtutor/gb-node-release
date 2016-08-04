@@ -7,7 +7,7 @@ npm install -g gb-node-release
 
 Within the a given node project, run:
 ```
-gb-node-release minor
+release minor
 ```
 
 Requires that you set environment variables for github user, and API key:
