@@ -21,9 +21,10 @@ version numbers specified within files listed in `versionInFiles` in the
 optional configuration yaml `.gb-release.yml`.
 
 ```yaml
-github:
+github:                             # Specify the env vars to find credentials
   usernameEnvVar: GITHUB_USER
   codeEnvVar: GITHUB_CODE
 versionInFiles:
-  - fileContainingCurrentVersionSomewhere.txt
+  - containingCurrentVersion.txt    # Replace version numbers in these files
+npmPublish: false                   # Publish after release. Defaults to false
 ```
