@@ -1,6 +1,3 @@
-const _          = require('lodash');
-const path       = require('path');
-const fileExists = require('file-exists');
 const log        = require('./logger');
 const fs         = require('fs');
 const Promise    = require('bluebird');
@@ -51,7 +48,7 @@ const releaser = (gitClient, githubClient, config, releaseType, newVersion) => {
       }, '');
 
       if (commitsSinceRelease.length === CONSTANTS.MAX_COMMIT_MSGS) {
-        releaseMsg += '\nAnd more commits not included here.'
+        releaseMsg += '\nAnd more commits not included here.';
       }
 
       return githubClient.repos.createRelease({
@@ -73,7 +70,7 @@ const getBranch = (gitClient) => {
         return;
       }
       resolve(status.current);
-    })
+    });
   });
 };
 

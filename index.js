@@ -1,3 +1,4 @@
+/*eslint no-process-env: "off" */
 const _          = require('lodash');
 const GithubAPI  = require('github');
 const Promise    = require('bluebird');
@@ -7,9 +8,7 @@ const log        = require('./src/logger');
 const releasing  = require('./src/releasing');
 const versioning = require('./src/versioning');
 const fs         = require('fs');
-const semver     = require('semver');
 const git        = require('simple-git');
-const stdio      = require('stdio');
 const CONSTANTS  = require('./src/constants');
 const npm        = require('npm');
 
@@ -23,7 +22,7 @@ if (!_.includes(CONSTANTS.RELEASE_LEVELS, releaseLevel)) {
 }
 
 const defaultConfig = {
-  github:         {
+  github: {
     usernameEnvVar: 'GITHUB_USER',
     codeEnvVar:     'GITHUB_CODE'
   },
@@ -51,7 +50,7 @@ if (!fileExists('./package.json')) {
   packageJson = JSON.parse(fs.readFileSync('./package.json'));
 
   if (!packageJson.repository) {
-    log.error(`repository must be defined in package.json`);
+    log.error('repository must be defined in package.json');
     abort = true;
   }
 }
@@ -82,7 +81,7 @@ const githubClient = new GithubAPI({
 });
 
 githubClient.authenticate({
-  type:     "basic",
+  type:     'basic',
   username: getEnvVar(config.github.usernameEnvVar),
   password: getEnvVar(config.github.codeEnvVar)
 });
@@ -92,14 +91,14 @@ versioning(git(), config, releaseLevel)
   .then((targetVersion) => releasing(git(), githubClient, config, releaseLevel, targetVersion))
   .then(() => {
     if (config.npmPublish) {
-      return new Promise((resolve, reject)=> {
+      return new Promise((resolve, reject) => {
         npm.load(packageJson, (err) => {
           if (err) {
             return reject(err);
           }
 
-          npm.commands.publish([], (err) => {
-            return err ? reject(err) : resolve();
+          npm.commands.publish([], (inner_err) => {
+            return inner_err ? reject(inner_err) : resolve();
           });
         });
       });
@@ -107,5 +106,5 @@ versioning(git(), config, releaseLevel)
   })
   .catch((error) => {
     log.error(`error during release ${error || ''}`);
-    process.exit(1)
+    process.exit(1);
   });

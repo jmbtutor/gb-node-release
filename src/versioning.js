@@ -1,9 +1,7 @@
-const _          = require('lodash');
 const Promise    = require('bluebird');
 const fileExists = require('file-exists');
 const log        = require('./logger');
 const fs         = require('fs');
-const path       = require('path');
 const semver     = require('semver');
 const CONSTANTS  = require('./constants');
 
@@ -27,7 +25,7 @@ const versioning = (gitClient, config, release) => {
           log.info('repo up to date');
         }
 
-        gitClient.log({}, (err, commitLog) => {
+        gitClient.log({}, (__, commitLog) => {
           if (commitLog.latest.message.match(CONSTANTS.RELEASE_MSG_REGEX)) {
             log.error('no new commits since last release');
             return reject();
@@ -38,13 +36,13 @@ const versioning = (gitClient, config, release) => {
             .then(() => {
               gitClient.add('./*')
                 .commit(`Bumps for ${release} release of v${targetVersion}`)
-                .push((err) => {
-                  if (err) {
-                    return reject(err);
+                .push((inner_err) => {
+                  if (inner_err) {
+                    return reject(inner_err);
                   }
 
                   resolve(targetVersion);
-                })
+                });
             })
             .catch(reject);
         });
@@ -57,7 +55,7 @@ const bumpVersion = (config, release) => {
   const targetPackage = JSON.parse(fs.readFileSync('./package.json'));
   const targetVersion = semver.inc(targetPackage.version, release);
 
-  log.info(`Performing release:`);
+  log.info('Performing release:');
   log.info(` - on package:       ${targetPackage.name}`);
   log.info(` - at version:       ${targetPackage.version}`);
   log.info(` - going to version: ${targetVersion}`);
@@ -70,7 +68,7 @@ const bumpVersion = (config, release) => {
       return Promise.reject();
     }
 
-    let fileString = fs.readFileSync(file, 'utf8');
+    const fileString = fs.readFileSync(file, 'utf8');
 
     if (!fileString) {
       log.error(`could not read file at: ${file}`);
