@@ -34,8 +34,16 @@ const versioning = (gitClient, config, release) => {
           return bumpVersion(config, release)
             .then((version) => targetVersion = version)
             .then(() => {
-              gitClient.add('./*')
-                .commit(`Bumps for ${release} release of v${targetVersion}`)
+              gitClient.add('./*', (inner_err) => {
+                if (inner_err) {
+                  return reject(inner_err);
+                }
+              })
+                .commit(`Bumps for ${release} release of v${targetVersion}`, [], {'-n': null}, (inner_err) => {
+                  if (inner_err) {
+                    return reject(inner_err);
+                  }
+                })
                 .push((inner_err) => {
                   if (inner_err) {
                     return reject(inner_err);
