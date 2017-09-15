@@ -41,7 +41,8 @@ const releaser = (gitClient, githubClient, config, releaseType, newVersion) => {
       let releaseMsg = 'Commits since last release:\n\n';
       releaseMsg += commitsSinceRelease.reduce((result, commit) => {
         if (!isReleaseMessage(commit.commit.message)) {
-          result += `- ${commit.commit.message}\n`;
+          const message = commit.commit.message.replace(/\n+/gm,'$&  ');
+          result += `- ${message}\n`;
         }
 
         return result;
