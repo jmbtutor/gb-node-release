@@ -44,7 +44,17 @@ const versioning = (gitClient, config, release) => {
                     return reject(inner_err);
                   }
                 })
+                .addTag(`v${targetVersion}`, (inner_err) => {
+                  if (inner_err) {
+                    return reject(inner_err);
+                  }
+                })
                 .push((inner_err) => {
+                  if (inner_err) {
+                    return reject(inner_err);
+                  }
+                })
+                .pushTags((inner_err) => {
                   if (inner_err) {
                     return reject(inner_err);
                   }
