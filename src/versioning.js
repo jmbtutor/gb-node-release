@@ -34,12 +34,17 @@ const versioning = (gitClient, config, release) => {
           return bumpVersion(config, release)
             .then((version) => targetVersion = version)
             .then(() => {
+              let commitMessage = `Bumps for ${release} release of v${targetVersion}`;
+              if (config.skipCi) {
+                commitMessage += '\n\n[ci skip]';
+              }
+
               gitClient.add('./*', (inner_err) => {
                 if (inner_err) {
                   return reject(inner_err);
                 }
               })
-                .commit(`Bumps for ${release} release of v${targetVersion}`, [], {'-n': null}, (inner_err) => {
+                .commit(commitMessage, [], {'-n': null}, (inner_err) => {
                   if (inner_err) {
                     return reject(inner_err);
                   }

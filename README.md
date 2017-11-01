@@ -29,4 +29,5 @@ github:                             # Specify the env vars to find credentials
 versionInFiles:
   - containingCurrentVersion.txt    # Replace version numbers in these files
 npmPublish: false                   # Publish after release. Defaults to false
+skipCi: false                       # Skip CI tests for the release commit. Defaults to false
 ```

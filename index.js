@@ -27,7 +27,8 @@ const defaultConfig = {
     codeEnvVar:     'GITHUB_CODE'
   },
   versionInFiles: [],
-  npmPublish:     false
+  npmPublish:     false,
+  skipCi:         false
 };
 
 let config = defaultConfig;
